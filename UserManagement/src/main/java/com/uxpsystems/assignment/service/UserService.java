@@ -46,8 +46,9 @@ public class UserService {
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.GET)
-	List<User> getUser(String username) {
-		return userDAOImpl.getUsersByName(username);
+	User getUser(String username) {
+		List<User> users = userDAOImpl.getUsersByName(username);
+		return (users != null && users.size() > 0) ? users.get(0) : null;
 	}
 
 	
@@ -56,9 +57,9 @@ public class UserService {
 		userDAOImpl.createNewUer(user);
 		return user;
 	}
-/*
+
 	@RequestMapping(value ="/user", method=RequestMethod.PUT)
-	boolean updateUser(@RequestBody User user) {
+	User updateUser(@RequestBody User user) {
 		return userDAOImpl.updateUser(user);
 	}
 
@@ -66,7 +67,7 @@ public class UserService {
 	boolean deleteUser(int userid) {
 		return userDAOImpl.deleteUser(userid);
 	}
-*//*
+/*
 	@RequestMapping(value ="/getAll", method=RequestMethod.GET)
 	List<User> getAllUsers() {
 		return userDAOImpl.getAllUsers();

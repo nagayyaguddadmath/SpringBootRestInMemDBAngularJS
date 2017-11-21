@@ -68,9 +68,9 @@ public class UserDAOImpl {
 		return true;
 	}
 
-	public boolean updateUser(User user) {
-		em.persist(user);
-		return true;
+	public User updateUser(User user) {
+		em.merge(user);
+		return user;
 	}
 
 	private User findUserById(int userid) {

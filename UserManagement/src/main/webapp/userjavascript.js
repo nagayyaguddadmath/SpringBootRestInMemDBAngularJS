@@ -20,14 +20,12 @@ app.controller("UserController", function($scope, $http) {
 //	_refreshuserData();
 
 
-	alert("Loading");
 
 	$scope.createUser = function() {
 		var method = "";
 		var url = "";
 		method = "POST";
 		url = 'http://localhost:8080/user';
-		alert("createtUser");
 
 		$http({
 			method : method,
@@ -38,10 +36,9 @@ app.controller("UserController", function($scope, $http) {
 			}
 		}).then( _success, _error );
 
-		alert("Operation  completed successfully");
+//		alert("Operation  completed successfully");
 	};
 
-	/*
 
 	$scope.showAll = function() {
 
@@ -55,7 +52,7 @@ app.controller("UserController", function($scope, $http) {
 
 		method = "PUT";
 		url = 'http://localhost:8080/user';
-		alert("updateUser");
+//		alert("updateUser");
 
 		$http({
 			method : method,
@@ -65,9 +62,9 @@ app.controller("UserController", function($scope, $http) {
 				'Content-Type' : 'application/json'
 			}
 		}).then(function successCallback(response) {
-			$scope.users = response.data;
+			$scope.userForm = response.data;
 			_refreshuserData();
-			_clearFormData();
+//			_clearFormData();
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
@@ -82,8 +79,8 @@ app.controller("UserController", function($scope, $http) {
 
 		method = "GET";
 
-		url = 'http://localhost:8080/finduser?username=' + $scope.userForm.username;
-		alert("findUser");
+		url = 'http://localhost:8080/user?username=' + $scope.userForm.username;
+//		alert("findUser");
 
 		$http({
 			method : method,
@@ -93,15 +90,15 @@ app.controller("UserController", function($scope, $http) {
 				'Content-Type' : 'application/json'
 			}
 		}).then(function successCallback(response) {
-			$scope.users = response.data;
+			$scope.userForm = response.data;
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
 		});
 
 	};
-	 */
-	/*
+
+	
 	$scope.sortByName = function() {
 		var method = "";
 		var url = "";
@@ -124,9 +121,8 @@ app.controller("UserController", function($scope, $http) {
 		});
 
 	};
-	 */
 
-	/*
+
 	$scope.deleteUser = function(user) {
 
 		$scope.userForm.username = user.username;
@@ -154,14 +150,13 @@ app.controller("UserController", function($scope, $http) {
 		alert("Please edit above and click on Update button. Please don't edit Name..");
 	};
 
-	 */
 
-	/*
+
 	function _refreshuserData() {
-		alert("_refreshuserData");
+//		alert("_refreshuserData");
 		$http({
 			method : 'GET',
-			url : 'http://localhost:8080/user'
+			url : 'http://localhost:8080/user?username=' + $scope.userForm.username
 		}).then(function successCallback(response) {
 			$scope.users = response.data;
 		}, function errorCallback(response) {
@@ -188,6 +183,5 @@ app.controller("UserController", function($scope, $http) {
 		$scope.userForm.status = "";
 
 	};
-	 */
 
 });
