@@ -11,7 +11,8 @@ app.controller("UserController", function($scope, $http) {
 			userid : -1,
 			username : "",
 			password : "",
-			status : ""
+			status : "",
+			result : ""
 	};
 
 	$scope.checkAll = function () {
@@ -34,7 +35,15 @@ app.controller("UserController", function($scope, $http) {
 			headers : {
 				'Content-Type' : 'application/json'
 			}
-		}).then( _success, _error );
+		}).then(function successCallback(response) {
+//			$scope.userForm = response.data;
+			_refreshuserData();
+			$scope.userForm.response = "create";
+//			_clearFormData();
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response));
+			console.log(response.statusText);
+		});//then( _success, _error );
 
 //		alert("Operation  completed successfully");
 	};
@@ -62,8 +71,9 @@ app.controller("UserController", function($scope, $http) {
 				'Content-Type' : 'application/json'
 			}
 		}).then(function successCallback(response) {
-			$scope.userForm = response.data;
+//			$scope.userForm = response.data;
 			_refreshuserData();
+			$scope.userForm.response = "update";
 //			_clearFormData();
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
@@ -91,6 +101,7 @@ app.controller("UserController", function($scope, $http) {
 			}
 		}).then(function successCallback(response) {
 			$scope.userForm = response.data;
+			$scope.userForm.response = "found";
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
@@ -98,7 +109,7 @@ app.controller("UserController", function($scope, $http) {
 
 	};
 
-	
+
 	$scope.sortByName = function() {
 		var method = "";
 		var url = "";
@@ -137,7 +148,14 @@ app.controller("UserController", function($scope, $http) {
 			headers : {
 				'Content-Type' : 'application/json'
 			}
-		}).then(_success, _error);
+		}).then(function successCallback(response) {
+			$scope.users = response.data;
+			$scope.userForm.response = "delete";
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response));
+			console.log(response.statusText);
+		});
+//then(_success, _error);
 	};
 
 	// In case of edit, populate form fields 
@@ -159,6 +177,7 @@ app.controller("UserController", function($scope, $http) {
 			url : 'http://localhost:8080/user?username=' + $scope.userForm.username
 		}).then(function successCallback(response) {
 			$scope.users = response.data;
+			$scope.userForm.response = "";
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
@@ -181,6 +200,7 @@ app.controller("UserController", function($scope, $http) {
 		$scope.userForm.username = "";
 		$scope.userForm.password = "";
 		$scope.userForm.status = "";
+		$scope.userForm.response = "";
 
 	};
 

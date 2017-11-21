@@ -1,4 +1,4 @@
-package com.uxpsystems.assignment.dao;
+package com.uxpsystems.assignment.model;
 
 import javax.persistence.AttributeConverter;
 

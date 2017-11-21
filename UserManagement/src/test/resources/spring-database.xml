@@ -49,16 +49,15 @@
 		</property>
 	</bean>
 
-	<bean id="user" class="com.uxpsystems.assignment.dao.User" />
+	<bean id="user" class="com.uxpsystems.assignment.model.User" />
 
-<!-- 	<bean id="userDAOImpl" class="com.uxpsystems.assignment.dao.UserDAOImpl">
-		<property name="em" ref="sessionFactory" />
+ 	<bean id="userServiceDAOImpl" class="com.uxpsystems.assignment.service.UserServiceDAOImpl" />
+
+
+<!--  	<bean id="UserController" class="com.uxpsystems.assignment.controller.UserController">
+		<property name="userServiceDAOImpl" ref="userServiceDAOImpl" />
 	</bean>
  -->
-	<bean id="userService" class="com.uxpsystems.assignment.service.UserService">
-		<property name="userDAOImpl" ref="userDAOImpl" />
-	</bean>
-
 	<!-- <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"> 
 		<property name="sessionFactory" ref="sessionFactory"></property> </bean> -->
 

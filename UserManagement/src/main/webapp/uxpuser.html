@@ -97,7 +97,7 @@ td, th {
 				</tr>
 				<tr>
 					<td>User Name</td>
-					<td><input type="text" ng-model="userForm.username" ></input></td>
+					<td><input type="text" ng-model="userForm.username"></input></td>
 				</tr>
 				<tr>
 					<td>User Password</td>
@@ -106,52 +106,31 @@ td, th {
 				<tr>
 					<td>User Activated</td>
 					<td><input type="checkbox" ng-model="userForm.status" checked
-					ng-click="checkAll()" ng-true-value="'Activated'" ng-false-value="'Deactivated'"/>
-					</td>
+						ng-click="checkAll()" ng-true-value="'Activated'"
+						ng-false-value="'Deactivated'" /></td>
 				</tr>
 				<tr>
 					<td colspan="2">
-					<button ng-click="createUser()"  class="blue-button" >Create User</button>
-					<button ng-click="findUser()" class="blue-button" >Find User</button>
-					<button ng-click="updateUser()" class="blue-button" >Update User</button>
-					
+						<button ng-click="createUser()" class="blue-button">Create
+							User</button>
+						<button ng-click="findUser()" class="blue-button">Find
+							User</button>
+						<button ng-click="updateUser()" class="blue-button">Update
+							User</button>
+
+					</td>
+					<td>
+						<div ng-switch on=userForm.response">
+							<p ng-switch-when="create">User created successfully..</p>
+							<p ng-switch-when="update">User updated successfully..</p>
+							<p ng-switch-when="found">Found user</p>
+							<p ng-switch-when="delete">Deleted User successfully..</p>
+						</div>
 					</td>
 				</tr>
 			</table>
 		</form>
 
-		<table>
-			<tr>
-					<button ng-click="showAll()" class="blue-button" >Show-All</button>
-					<button ng-click="sortByName()" class="blue-button" >Sort By Name</button>
-			</tr>
-		</table>
-
-
-		<table>
-			<tr>
-
-				<th>UserName</th>
-				<th>UserPassword</th>
-				<th>Status</th>
-				<th>Operations</th>
-
-			</tr>
-
-			<tr ng-repeat="user in users">
-
-				<td>{{ user.username }}</td>
-				<td>{{ user.password }}</td>
-				<td>{{ user.status }}</td>
-
-				<td>
-				<button ng-click="editUser(user)" class="blue-button">Edit</button>
-					| <button ng-click="deleteUser(user)" class="red-button">Delete</button>
-				</td>
-			</tr>
-
-
-		</table>
 	</div>
 
 

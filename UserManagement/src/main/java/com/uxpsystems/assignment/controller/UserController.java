@@ -1,4 +1,4 @@
-package com.uxpsystems.assignment.service;
+package com.uxpsystems.assignment.controller;
 
 import java.util.List;
 
@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uxpsystems.assignment.dao.User;
-import com.uxpsystems.assignment.dao.UserDAOImpl;
+import com.uxpsystems.assignment.model.User;
+import com.uxpsystems.assignment.service.UserServiceDAO;
+import com.uxpsystems.assignment.service.UserServiceDAOImpl;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 /**
@@ -35,37 +36,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 @ImportResource("classpath:spring-database.xml")
 @EnableAutoConfiguration
 @EnableTransactionManagement
-public class UserService {
+public class UserController {
 
 	@Autowired
-	private UserDAOImpl userDAOImpl;
+	private UserServiceDAO userServiceDAO;
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(UserService.class, args);
+		SpringApplication.run(UserController.class, args);
 
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.GET)
 	User getUser(String username) {
-		List<User> users = userDAOImpl.getUsersByName(username);
+		List<User> users = userServiceDAO.getUsersByName(username);
 		return (users != null && users.size() > 0) ? users.get(0) : null;
 	}
 
 	
 	@RequestMapping(value ="/user", method=RequestMethod.POST)
 	User addUser(@RequestBody User user) {
-		userDAOImpl.createNewUer(user);
+		userServiceDAO.createNewUer(user);
 		return user;
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.PUT)
 	User updateUser(@RequestBody User user) {
-		return userDAOImpl.updateUser(user);
+		return userServiceDAO.updateUser(user);
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.DELETE)
 	boolean deleteUser(int userid) {
-		return userDAOImpl.deleteUser(userid);
+		return userServiceDAO.deleteUser(userid);
 	}
 /*
 	@RequestMapping(value ="/getAll", method=RequestMethod.GET)
@@ -161,13 +162,13 @@ public class UserService {
 	 */
 
 
-	public UserDAOImpl getUserDAOImpl() {
-		return userDAOImpl;
+	public UserServiceDAO getUserDAOImpl() {
+		return userServiceDAO;
 	}
 
 
-	public void setUserDAOImpl(UserDAOImpl userDAOImpl) {
-		this.userDAOImpl = userDAOImpl;
+	public void setUserDAOImpl(UserServiceDAO userDAO) {
+		this.userServiceDAO = userDAO;
 	}
 
 

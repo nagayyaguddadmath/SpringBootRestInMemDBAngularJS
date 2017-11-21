@@ -1,11 +1,11 @@
-package com.uxpsystems.assignment.service;
+package com.uxpsystems.assignment.controller;
 
 
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.uxpsystems.assignment.dao.User;
+import com.uxpsystems.assignment.model.User;
 
 
 public class ContactValidator implements Validator {

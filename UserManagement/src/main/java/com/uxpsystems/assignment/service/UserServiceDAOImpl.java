@@ -1,4 +1,4 @@
-package com.uxpsystems.assignment.dao;
+package com.uxpsystems.assignment.service;
 
 import java.util.List;
 
@@ -9,15 +9,14 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.uxpsystems.assignment.model.User;
+import com.uxpsystems.assignment.model.UserStatus;
+
 @Repository
 @Transactional
 //@EnableTransactionManagement
-public class UserDAOImpl {
+public class UserServiceDAOImpl implements UserServiceDAO {
 
-	/*	static Session sessionObj;
-	@Autowired
-	private SessionFactory sessionFactory;
-	 */	
 	private static int userId = 1;
 
 	@PersistenceContext
@@ -29,6 +28,7 @@ public class UserDAOImpl {
 
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public List<User> getUsersByName(String username) {
 		Query query = em.createQuery(SELECTQUERYBYNAME)
 				.setParameter("username", username)
@@ -37,12 +37,14 @@ public class UserDAOImpl {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public List<User> getAllUsers() {
 		Query query = em.createQuery(SELECTALLQUERY)
 				.setParameter("status", UserStatus.Activated);
 		return (List<User>)query.getResultList();
 	}
 
+	@Override
 	public void createNewUer(User user) {
 
 		try {
@@ -61,6 +63,7 @@ public class UserDAOImpl {
 
 	}
 
+	@Override
 	public boolean deleteUser(int userid) {
 		User user = findUserById(userid);
 		user.setStatus(UserStatus.Deactivated);
@@ -68,6 +71,7 @@ public class UserDAOImpl {
 		return true;
 	}
 
+	@Override
 	public User updateUser(User user) {
 		em.merge(user);
 		return user;

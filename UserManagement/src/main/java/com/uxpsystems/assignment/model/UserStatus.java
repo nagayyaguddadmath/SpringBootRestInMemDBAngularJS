@@ -1,4 +1,4 @@
-package com.uxpsystems.assignment.dao;
+package com.uxpsystems.assignment.model;
 
 public enum UserStatus {
 
