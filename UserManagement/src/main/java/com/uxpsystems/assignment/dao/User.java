@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "user_table")
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
 
 

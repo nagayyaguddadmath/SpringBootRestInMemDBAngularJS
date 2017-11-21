@@ -14,16 +14,20 @@ app.controller("UserController", function($scope, $http) {
 			status : ""
 	};
 
+	$scope.checkAll = function () {
+	};
 
 //	_refreshuserData();
 
 
+	alert("Loading");
 
-	$scope.createtUser = function() {
+	$scope.createUser = function() {
 		var method = "";
 		var url = "";
 		method = "POST";
 		url = 'http://localhost:8080/user';
+		alert("createtUser");
 
 		$http({
 			method : method,
@@ -37,7 +41,7 @@ app.controller("UserController", function($scope, $http) {
 		alert("Operation  completed successfully");
 	};
 
-
+	/*
 
 	$scope.showAll = function() {
 
@@ -51,6 +55,7 @@ app.controller("UserController", function($scope, $http) {
 
 		method = "PUT";
 		url = 'http://localhost:8080/user';
+		alert("updateUser");
 
 		$http({
 			method : method,
@@ -76,7 +81,9 @@ app.controller("UserController", function($scope, $http) {
 		var url = "";
 
 		method = "GET";
-		url = 'http://localhost:8080/user';
+
+		url = 'http://localhost:8080/finduser?username=' + $scope.userForm.username;
+		alert("findUser");
 
 		$http({
 			method : method,
@@ -93,8 +100,8 @@ app.controller("UserController", function($scope, $http) {
 		});
 
 	};
-
-/*
+	 */
+	/*
 	$scope.sortByName = function() {
 		var method = "";
 		var url = "";
@@ -116,15 +123,16 @@ app.controller("UserController", function($scope, $http) {
 			console.log(response.statusText);
 		});
 
-*/	};
+	};
+	 */
 
-
-	//HTTP DELETE- delete user by Id
+	/*
 	$scope.deleteUser = function(user) {
 
 		$scope.userForm.username = user.username;
 		$scope.userForm.password = user.password;
-		$scope.userForm.address = user.address;
+		$scope.userForm.status = user.status;
+		alert("deleteUser");
 
 		$http({
 			method : 'DELETE',
@@ -141,13 +149,16 @@ app.controller("UserController", function($scope, $http) {
 
 		$scope.userForm.username = user.username;
 		$scope.userForm.password = user.password;
-		$scope.userForm.address = user.address;
+		$scope.userForm.status = user.status;
 
 		alert("Please edit above and click on Update button. Please don't edit Name..");
 	};
 
+	 */
 
+	/*
 	function _refreshuserData() {
+		alert("_refreshuserData");
 		$http({
 			method : 'GET',
 			url : 'http://localhost:8080/user'
@@ -177,9 +188,6 @@ app.controller("UserController", function($scope, $http) {
 		$scope.userForm.status = "";
 
 	};
-
-	$scope.checkAll = function () {
-//		alert($scope.userForm.status);
-	};
+	 */
 
 });

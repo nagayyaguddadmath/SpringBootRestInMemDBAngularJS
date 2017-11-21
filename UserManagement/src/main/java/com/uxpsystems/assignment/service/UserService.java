@@ -52,7 +52,7 @@ public class UserService {
 
 	
 	@RequestMapping(value ="/user", method=RequestMethod.POST)
-	User addUser(User user) {
+	User addUser(@RequestBody User user) {
 		userDAOImpl.createNewUer(user);
 		return user;
 	}
