@@ -45,9 +45,9 @@ public class UserController {
 		List<User> users = userServiceDAO.getUsersByName(username);
 		if (users == null || users.size() < 1) {
 			return null;
-		} else if (users.size() > 1){
+		}/* else if (users.size() > 1){
 			throw new Exception("Error: More than one user found with this user name:" + username);
-		}
+		}*/
 
 		return users.get(0);
 	}

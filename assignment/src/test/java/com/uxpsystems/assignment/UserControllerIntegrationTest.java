@@ -22,9 +22,9 @@ import org.springframework.web.client.RestTemplate;
 import com.uxpsystems.assignment.model.User;
 import com.uxpsystems.assignment.model.UserStatus;
 
-@WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration//(classes = {WebConfig.class})
+//@WebAppConfiguration
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration//(classes = {WebConfig.class})
 public class UserControllerIntegrationTest {
 
 	private static final String BASE_URI = "http://localhost:8080/user";

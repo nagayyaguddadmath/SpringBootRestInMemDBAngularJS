@@ -36,16 +36,13 @@ app.controller("UserController", function($scope, $http) {
 				'Content-Type' : 'application/json'
 			}
 		}).then(function successCallback(response) {
-//			$scope.userForm = response.data;
 			_refreshuserData();
 			$scope.userForm.response = "create";
-//			_clearFormData();
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
-		});//then( _success, _error );
+		});
 
-//		alert("Operation  completed successfully");
 	};
 
 
@@ -61,7 +58,6 @@ app.controller("UserController", function($scope, $http) {
 
 		method = "PUT";
 		url = 'http://localhost:8080/user';
-//		alert("updateUser");
 
 		$http({
 			method : method,
@@ -71,10 +67,8 @@ app.controller("UserController", function($scope, $http) {
 				'Content-Type' : 'application/json'
 			}
 		}).then(function successCallback(response) {
-//			$scope.userForm = response.data;
 			_refreshuserData();
 			$scope.userForm.response = "update";
-//			_clearFormData();
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
@@ -90,7 +84,6 @@ app.controller("UserController", function($scope, $http) {
 		method = "GET";
 
 		url = 'http://localhost:8080/user?username=' + $scope.userForm.username;
-//		alert("findUser");
 
 		$http({
 			method : method,
