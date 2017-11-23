@@ -105,7 +105,7 @@ td, th {
 				</tr>
 				<tr>
 					<td>User Activated</td>
-					<td><input type="checkbox" ng-model="userForm.status" checked
+					<td><input type="checkbox" ng-model="userForm.status" ng-init="checked=true"
 						ng-click="checkAll()" ng-true-value="'Activated'"
 						ng-false-value="'Deactivated'" /></td>
 				</tr>

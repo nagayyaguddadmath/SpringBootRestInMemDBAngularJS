@@ -27,6 +27,7 @@ app.controller("UserController", function($scope, $http) {
 		var url = "";
 		method = "POST";
 		url = 'http://localhost:8080/user';
+		$scope.userForm.status = "Activated";
 
 		$http({
 			method : method,
