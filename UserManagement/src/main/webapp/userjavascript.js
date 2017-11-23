@@ -134,16 +134,11 @@ app.controller("UserController", function($scope, $http) {
 	};
 
 
-	$scope.deleteUser = function(user) {
-
-		$scope.userForm.username = user.username;
-		$scope.userForm.password = user.password;
-		$scope.userForm.status = user.status;
-		alert("deleteUser");
+	$scope.deleteUser = function() {
 
 		$http({
 			method : 'DELETE',
-			url : 'http://localhost:8080/user',
+			url : 'http://localhost:8080/user?userid=' + $scope.userForm.userid,
 			data : angular.toJson($scope.userForm),
 			headers : {
 				'Content-Type' : 'application/json'
@@ -155,7 +150,6 @@ app.controller("UserController", function($scope, $http) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
 		});
-//then(_success, _error);
 	};
 
 	// In case of edit, populate form fields 
@@ -171,7 +165,6 @@ app.controller("UserController", function($scope, $http) {
 
 
 	function _refreshuserData() {
-//		alert("_refreshuserData");
 		$http({
 			method : 'GET',
 			url : 'http://localhost:8080/user?username=' + $scope.userForm.username
@@ -202,6 +195,6 @@ app.controller("UserController", function($scope, $http) {
 		$scope.userForm.status = "";
 		$scope.userForm.response = "";
 
-	};
+	}
 
 });

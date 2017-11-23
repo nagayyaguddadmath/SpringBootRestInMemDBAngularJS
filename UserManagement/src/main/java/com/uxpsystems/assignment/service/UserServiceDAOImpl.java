@@ -14,7 +14,6 @@ import com.uxpsystems.assignment.model.UserStatus;
 
 @Repository
 @Transactional
-//@EnableTransactionManagement
 public class UserServiceDAOImpl implements UserServiceDAO {
 
 	private static int userId = 1;
@@ -29,11 +28,15 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> getUsersByName(String username) {
+	public List<User> getUsersByName(String username) throws Exception {
 		Query query = em.createQuery(SELECTQUERYBYNAME)
 				.setParameter("username", username)
 				.setParameter("status", UserStatus.Activated);
-		return (List<User>)query.getResultList();
+		List<User> users = (List<User>)query.getResultList();
+		if (users == null || users.size() < 1) {
+			throw new Exception("User Not found in the database");
+		}
+		return users;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,13 +44,20 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 	public List<User> getAllUsers() {
 		Query query = em.createQuery(SELECTALLQUERY)
 				.setParameter("status", UserStatus.Activated);
+		System.out.println("\n.......Found Users From The Database.......\n");
 		return (List<User>)query.getResultList();
 	}
 
 	@Override
-	public void createNewUer(User user) {
+	public void createNewUer(User user) throws Exception {
 
 		try {
+			if ( (user.getUsername() == null || user.getUsername().length() < 1)  ||
+					(user.getPassword() == null || user.getPassword().length() < 1)) {
+				throw new Exception("UserName/Password cannot be blank");
+			} else if (!user.getStatus().equals(UserStatus.Activated)) {
+				throw new Exception("Cannot create Deactivated user!!");
+			}
 			User userObj = new User();
 			userObj.setUserid(userId++);
 			userObj.setUsername(user.getUsername());
@@ -57,36 +67,40 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 			em.persist(userObj);
 			System.out.println("\n.......User Saved Successfully To The Database.......\n");
 
-		} catch(Exception sqlException) {
-			sqlException.printStackTrace();
+		} catch(Exception exception) {
+			throw exception;
 		}
 
 	}
 
 	@Override
-	public boolean deleteUser(int userid) {
+	public User deleteUser(int userid) throws Exception {
 		User user = findUserById(userid);
 		user.setStatus(UserStatus.Deactivated);
 		em.persist(user);
-		return true;
-	}
-
-	@Override
-	public User updateUser(User user) {
-		em.merge(user);
+		System.out.println("\n.......Deleted User Successfully From The Database.......\n");
 		return user;
 	}
 
-	private User findUserById(int userid) {
+	@Override
+	public User updateUser(User user) throws Exception{
+		em.merge(user);
+		System.out.println("\n.......User Updated Successfully To The Database.......\n");
+		return user;
+	}
+
+	private User findUserById(int userid) throws Exception {
 		Query query = em.createQuery(SELECTQUERYBYID)
 				.setParameter("userid", userid)
 				.setParameter("status", UserStatus.Activated);
 		@SuppressWarnings("unchecked")
 		List<User> users = query.getResultList();
 		if (users != null && users.size() == 1) {
+			System.out.println("\n.......Found User From The Database.......\n");
 			return users.get(0);
+		} else {
+			throw new Exception("User Not found in the database");
 		}
-		return null;
 	}
 
 }

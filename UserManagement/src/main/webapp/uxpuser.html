@@ -101,7 +101,7 @@ td, th {
 				</tr>
 				<tr>
 					<td>User Password</td>
-					<td><input type="text" ng-model="userForm.password"></input></td>
+					<td><input type="password" ng-model="userForm.password"></input></td>
 				</tr>
 				<tr>
 					<td>User Activated</td>
@@ -117,9 +117,9 @@ td, th {
 							User</button>
 						<button ng-click="updateUser()" class="blue-button">Update
 							User</button>
+						<button ng-click="deleteUser()" class="blue-button">Delete
+							User</button>
 
-					</td>
-					<td>
 						<div ng-switch on=userForm.response">
 							<p ng-switch-when="create">User created successfully..</p>
 							<p ng-switch-when="update">User updated successfully..</p>

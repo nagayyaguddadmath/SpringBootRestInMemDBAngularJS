@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uxpsystems.assignment.model.User;
 import com.uxpsystems.assignment.service.UserServiceDAO;
-import com.uxpsystems.assignment.service.UserServiceDAOImpl;
-import javax.validation.Valid;
-import org.springframework.web.bind.annotation.RequestBody;
 /**
  * @author nagayya
  *
@@ -29,10 +25,9 @@ import org.springframework.web.bind.annotation.RequestBody;
  * Please note that this application will store the given users to in-memory database
  *
  */
-@CrossOrigin//(origins = "http://localhost:8080", maxAge = 3600)
+@CrossOrigin
 @RestController
 @ComponentScan("com.uxpsystems.assignment")
-//@SpringBootApplication
 @ImportResource("classpath:spring-database.xml")
 @EnableAutoConfiguration
 @EnableTransactionManagement
@@ -43,123 +38,40 @@ public class UserController {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(UserController.class, args);
-
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.GET)
-	User getUser(String username) {
+	User getSingleUser(String username) throws Exception{
 		List<User> users = userServiceDAO.getUsersByName(username);
-		return (users != null && users.size() > 0) ? users.get(0) : null;
+		if (users == null || users.size() < 1) {
+			return null;
+		} else if (users.size() > 1){
+			throw new Exception("Error: More than one user found with this user name:" + username);
+		}
+
+		return users.get(0);
 	}
 
-	
 	@RequestMapping(value ="/user", method=RequestMethod.POST)
-	User addUser(@RequestBody User user) {
+	User addUser(@RequestBody User user) throws Exception {
 		userServiceDAO.createNewUer(user);
 		return user;
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.PUT)
-	User updateUser(@RequestBody User user) {
+	User updateUser(@RequestBody User user) throws Exception{
 		return userServiceDAO.updateUser(user);
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.DELETE)
-	boolean deleteUser(int userid) {
+	User deleteUser(int userid) throws Exception {
 		return userServiceDAO.deleteUser(userid);
 	}
-/*
-	@RequestMapping(value ="/getAll", method=RequestMethod.GET)
-	List<User> getAllUsers() {
-		return userDAOImpl.getAllUsers();
+
+	@RequestMapping(value ="/user/getusers", method=RequestMethod.GET)
+	List<User> getAllUsers(String username) throws Exception{
+		return userServiceDAO.getUsersByName(username);
 	}
-*/
-
-	/*
-	@RequestMapping(value ="/getAll", method=RequestMethod.GET)
-	List<Contact> getAll() {
-		return allContacts;
-	}
-
-	@RequestMapping(value ="/sortByName", method=RequestMethod.GET)
-	List<Contact> sortByName() {
-		Collections.sort(allContacts, new Comparator<Contact>(){
-			  public int compare(Contact p1, Contact p2){
-			    return p1.getName().compareTo(p2.getName());
-			  }
-			});
-
-//		allContacts.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
-		return allContacts;
-	}
-
-	@RequestMapping(value ="/addContacts", method=RequestMethod.POST)
-	List<Contact> addContacts(@Valid @RequestBody List<Contact> contacts) {
-		allContacts.addAll(contacts);
-		return contacts;
-	}
-
-	@RequestMapping(value ="/removeContact", method=RequestMethod.POST)
-	Contact removeContact(@Valid @RequestBody Contact contact) {
-		Contact tebeRemoved = getFirstSerachByName(contact.getName());
-		allContacts.remove(tebeRemoved);
-		return contact;
-
-	}
-
-	@RequestMapping(value ="/updateContact", method=RequestMethod.POST)
-	Contact updateContact(@Valid @RequestBody Contact contact) {
-		Contact tebeUpdated = getFirstSerachByName(contact.getName());
-		allContacts.remove(tebeUpdated);
-		allContacts.add(contact);
-		return contact;
-
-	}
-
-	@RequestMapping(value ="/getContactByName", method=RequestMethod.GET)
-	List<Contact> getContactByName(String name) {
-		if (name == null || name.length() < 1) {
-			return null;
-		}
-		List<Contact> outContacts = new ArrayList<Contact>();
-		for (Contact contact: allContacts) {
-			if (contact.getName().contains(name)) {
-				outContacts.add(contact);
-			}
-		}
-
-		return outContacts;
-	}
-
-	@RequestMapping(value ="/getFirstSerachByName", method=RequestMethod.GET)
-	Contact getFirstSerachByName(String name) {
-		if (name == null || name.length() < 1) {
-			return null;
-		}
-		for (Contact contact: allContacts) {
-			if (contact.getName().contains(name)) {
-				return contact;
-			}
-		}
-
-		return null;
-	}
-
-
-	@RequestMapping(value ="/searchContacts", method=RequestMethod.POST)
-	List<Contact> searchContacts(@RequestBody Contact inContact) {
-		List<Contact> outContacts = new ArrayList<Contact>();
-		for (Contact contact: allContacts) {
-			if ( (inContact.getName() == null || contact.getName().contains(inContact.getName())) &&
-					(inContact.getPhone_number() == null || contact.getPhone_number().contains(inContact.getPhone_number())) &&
-					(inContact.getAddress() == null || contact.getAddress().contains(inContact.getAddress())) ) {
-				outContacts.add(contact);
-			}
-		}
-
-		return outContacts;
-	}
-	 */
 
 
 	public UserServiceDAO getUserDAOImpl() {

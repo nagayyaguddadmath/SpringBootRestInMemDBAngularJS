@@ -6,14 +6,14 @@ import com.uxpsystems.assignment.model.User;
 
 public interface UserServiceDAO {
 
-	List<User> getUsersByName(String username);
+	List<User> getUsersByName(String username) throws Exception;
 	
 	List<User> getAllUsers();
 	
-	void createNewUer(User user);
+	void createNewUer(User user) throws Exception;
 	
-	boolean deleteUser(int userid);
+	User deleteUser(int userid) throws Exception ;
 	
-	User updateUser(User user);
+	User updateUser(User user) throws Exception;
 	
 }

@@ -3,26 +3,24 @@ package com.uxpsystems.assignment.model;
 public enum UserStatus {
 
 	Activated ("true"),
-	Deactivated("false"),
-	Default("");
-	
+	Deactivated("false");	
 	String status;
 
-    private UserStatus(String status) {
-        this.status = status;
-    }
+	private UserStatus(String status) {
+		this.status = status;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public static UserStatus getStatus(String status) {
-        if (status == null)
-            return null;
-        for (UserStatus g : values()) {
-            if (g.getStatus().equals(status))
-                return g;
-        }
-        return null;
-    }
+	public static UserStatus getStatus(String status) {
+		if (status == null)
+			return null;
+		for (UserStatus g : values()) {
+			if (g.getStatus().equals(status))
+				return g;
+		}
+		return null;
+	}
 }
