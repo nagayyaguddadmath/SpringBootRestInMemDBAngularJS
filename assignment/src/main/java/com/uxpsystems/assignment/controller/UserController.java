@@ -53,9 +53,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.POST)
-	User addUser(@RequestBody User user) throws Exception {
-		userServiceDAO.createNewUer(user);
-		return user;
+	User createUser(@RequestBody User user) throws Exception {
+		return userServiceDAO.createNewUer(user);
 	}
 
 	@RequestMapping(value ="/user", method=RequestMethod.PUT)

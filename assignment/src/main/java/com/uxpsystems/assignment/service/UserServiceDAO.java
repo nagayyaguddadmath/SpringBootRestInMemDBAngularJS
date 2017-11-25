@@ -10,7 +10,7 @@ public interface UserServiceDAO {
 	
 	List<User> getAllUsers();
 	
-	void createNewUer(User user) throws Exception;
+	User createNewUer(User user) throws Exception;
 	
 	User deleteUser(int userid) throws Exception ;
 	

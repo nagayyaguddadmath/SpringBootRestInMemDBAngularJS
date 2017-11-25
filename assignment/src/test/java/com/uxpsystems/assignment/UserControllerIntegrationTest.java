@@ -1,68 +1,276 @@
 package com.uxpsystems.assignment;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
+import static io.restassured.RestAssured.basic;
+import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertTrue;
 
-import java.nio.charset.Charset;
-
-import org.apache.commons.codec.binary.Base64;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.client.RestTemplate;
 
-//import com.uxpsystems.assignment.config.WebConfig;
+import com.uxpsystems.assignment.controller.UserController;
 import com.uxpsystems.assignment.model.User;
 import com.uxpsystems.assignment.model.UserStatus;
 
-//@WebAppConfiguration
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration//(classes = {WebConfig.class})
+import io.restassured.RestAssured;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.ResponseSpecification;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ComponentScan("com.uxpsystems.assignment")
+//@EnableAutoConfiguration
+@ContextConfiguration(locations={"classpath*:spring-database.xml"})
 public class UserControllerIntegrationTest {
 
-	private static final String BASE_URI = "http://localhost:8080/user";
-	private String userNameAuth = "admin";
-	private String userPassAuth = "password";
+	private static final String ADMIN_USER_NAME = "admin";
+	private static final String ADMIN_PASSWORD = "password";
+	private static String pathOfURL;
 
-	@Autowired
-	private RestTemplate template;
+	@BeforeClass
+	public static void setUp() throws InterruptedException{
+		SpringApplication.run(UserController.class, "");
 
-
-	HttpHeaders createHeaders(final String username, final String password){
-		return new HttpHeaders() {{
-			String auth = username + ":" + password;
-			byte[] encodedAuth = Base64.encodeBase64( 
-					auth.getBytes(Charset.forName("US-ASCII")) );
-			String authHeader = "Basic " + new String( encodedAuth );
-			set( "Authorization", authHeader );
-		}};
-	}
-	// =========================================== Create New User ========================================
-
-	//	@Test
-	public void test_create_new_user_success1(){
-		User newUser = new User();
-		newUser.setUsername("new username");
-		newUser.setPassword("password");
-		newUser.setStatus(UserStatus.Activated);
-
-		HttpEntity<User> httpEntity  = new HttpEntity<User>(newUser, createHeaders(userNameAuth, userPassAuth));
-		//		User user = template.postForObject(BASE_URI, newUser, User.class);
-		ResponseEntity<User> result =template.exchange(BASE_URI, HttpMethod.POST, httpEntity , User.class);
-		User user = result.getBody();
-
-		assertThat(user, notNullValue());
-		assertThat(user.getUsername(), is("new username"));
-		assertThat(user.getPassword(), is("password"));
-		assertThat(user.getStatus(), is(UserStatus.Activated));
+		RestAssured.baseURI = "http://localhost";
+		RestAssured.port = 8080;
+		RestAssured.basePath = "/user";
+		RestAssured.authentication = basic(ADMIN_USER_NAME, ADMIN_PASSWORD);
+		pathOfURL = RestAssured.baseURI + ":" + RestAssured.port + RestAssured.basePath;
+		//2 seconds sleep so that in-memory database starts correctly
+		Thread.sleep(2000);
 	}
 
+	@AfterClass
+	public static void destroy() throws InterruptedException{
+		//2 seconds sleep so that in-memory database shutdown correctly
+		Thread.sleep(2000);
+	}
+
+	String userJsonRequest = "{\"userid\": \"1\",\"username\": \"Nagayya\",\"password\": \"testpassword\",\"status\": \"Activated\"}";
+	String userJsonResponse = "{\"userid\": \"[\\d]+\",\"username\": \"[\\p{ASCII}]+\",\"password\": \"[\\p{ASCII}]+\",\"status\": \"Activated\"}";
+
+	public static Response response;
+
+	ResponseSpecification checkStatusCodeAndContentType = 
+			new ResponseSpecBuilder().
+			expectStatusCode(200).
+			expectContentType(ContentType.JSON).
+			build();
+
+	@Test
+	public void checkUserHTMLPage() throws InterruptedException {
+
+		given().
+		when().
+			get(RestAssured.baseURI + ":" + RestAssured.port + "/uxpuser.html").
+		then().
+				assertThat().
+				statusCode(200).
+			and().
+				contentType(ContentType.HTML);
+
+	}
+
+	@Test
+	public void checkWrongHTMLPage() throws InterruptedException {
+
+		given().
+		when().
+			get(RestAssured.baseURI + ":" + RestAssured.port + "/wronguxpuser.html").
+		then().
+				assertThat().
+				statusCode(404);
+
+	}
+
+	@Test
+	public void checkCreateUserResponse() throws InterruptedException {
+
+		String username = "checkCreateUserAPI";
+		String userJsonRequest = "{\"userid\": \"1\",\"username\": \"" + username + "\",\"password\": \"testpassword\",\"status\": \"Activated\"}";
+
+		response =
+				given().
+					body(userJsonRequest).
+					contentType(ContentType.JSON).
+				when().
+					post().
+				then().
+					assertThat().
+					spec(checkStatusCodeAndContentType).
+				extract().
+					response();
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertTrue(username.equals(jsonPath.get("username")));
+		assertTrue("Activated".equals(jsonPath.get("status")));
+
+	}
+
+
+	@Test
+	public void CreateAndThenGetUser() throws InterruptedException {
+
+		String username = "checkBasicAuthenticationForGetUserAPI";
+		String userJsonRequest = "{\"userid\": \"1\",\"username\": \"" + username + "\",\"password\": \"testpassword\",\"status\": \"Activated\"}";
+
+		given().
+			body(userJsonRequest).
+			contentType(ContentType.JSON).
+		when().
+			post().
+		then().
+			assertThat().
+			spec(checkStatusCodeAndContentType);
+
+		response =
+				given().
+				when().
+					get(pathOfURL + "?username=" + username).
+				then().
+					assertThat().
+					spec(checkStatusCodeAndContentType).
+				extract().
+					response();
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertTrue(username.equals(jsonPath.get("username")));
+		assertTrue("Activated".equals(jsonPath.get("status")));
+
+	}
+
+
+	@Test
+	public void checkCreateAndThenDeleteUser() throws InterruptedException {
+
+		String username = "checkBasicAuthenticationForDeleteUserAPI";
+		String userJsonRequest = "{\"userid\": \"1\",\"username\": \"" + username + "\",\"password\": \"testpassword\",\"status\": \"Activated\"}";
+
+		given().
+			body(userJsonRequest).
+			contentType(ContentType.JSON).
+		when().
+			post().
+		then().
+			assertThat().
+			spec(checkStatusCodeAndContentType);
+
+		response =
+				given().
+				when().
+					delete(pathOfURL + "?userid=" + 1).
+				then().
+					assertThat().
+					spec(checkStatusCodeAndContentType).
+				extract().
+					response();
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertTrue("Deactivated".equals(jsonPath.get("status")));
+
+	}
+
+	@Test
+	public void checkCreateUserThenUpdateUser() throws InterruptedException {
+
+
+
+		String username = "checkBasicAuthenticationForDeleteUserAPI";
+		String usernameupdated = "checkBasicAuthenticationForDeleteUserAPIUPDATE";
+		String userJsonRequest = "{\"userid\": \"1\",\"username\": \"" + username + "\",\"password\": \"testpassword\",\"status\": \"Activated\"}";
+		String userJsonRequestUpdated = "{\"userid\": \"1\",\"username\": \"" + usernameupdated + "\",\"password\": \"testpassword\",\"status\": \"Activated\"}";
+
+		response =
+			given().
+				body(userJsonRequest).
+				contentType(ContentType.JSON).
+			when().
+				post().
+			then().
+				assertThat().
+				spec(checkStatusCodeAndContentType).
+			extract().
+				response();
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+		User updatedUser = new User();
+		updatedUser.setUserid(jsonPath.getInt("userid"));
+		updatedUser.setUsername(usernameupdated);
+		updatedUser.setPassword((String)jsonPath.get("password"));
+		updatedUser.setStatus(UserStatus.Activated);
+		
+		userJsonRequestUpdated = userJsonRequest.replace("\"1\"", "\"" + jsonPath.getInt("userid") + "\"");
+		userJsonRequestUpdated = userJsonRequestUpdated.replace(username, usernameupdated);
+		
+		response =
+				given().
+					body(userJsonRequestUpdated).
+					contentType(ContentType.JSON).
+				when().
+					put().
+				then().
+					assertThat().
+					spec(checkStatusCodeAndContentType).
+				extract().
+					response();
+
+		JsonPath jsonPathNew = new JsonPath(response.asString());
+		assertTrue(usernameupdated.equals(jsonPathNew.get("username")));
+		assertTrue("Activated".equals(jsonPathNew.get("status")));
+
+	}
+
+	@Test
+	public void checkAuthenticationFailureForAllUserAPI() throws InterruptedException {
+
+		given().
+			auth().
+			preemptive().
+			basic("username", "password").
+		when().
+			get().
+		then().
+			assertThat().
+			statusCode(401);
+
+		given().
+			auth().
+			preemptive().
+			basic("username", "password").
+		when().
+			post().
+		then().
+			assertThat().
+			statusCode(401);
+
+		given().
+			auth().
+			preemptive().
+			basic("username", "password").
+		when().
+			put().
+		then().
+			assertThat().
+			statusCode(401);
+
+		given().
+			auth().
+			preemptive().
+			basic("username", "password").
+		when().
+			delete().
+		then().
+			assertThat().
+			statusCode(401);
+		
+	}
 
 }

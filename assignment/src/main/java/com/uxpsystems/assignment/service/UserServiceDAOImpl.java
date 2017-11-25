@@ -49,7 +49,7 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 	}
 
 	@Override
-	public void createNewUer(User user) throws Exception {
+	public User createNewUer(User user) throws Exception {
 
 		try {
 			if ( (user.getUsername() == null || user.getUsername().length() < 1)  ||
@@ -67,6 +67,7 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 			em.persist(userObj);
 			System.out.println("\n.......User Saved Successfully To The Database.......\n");
 
+			return userObj;
 		} catch(Exception exception) {
 			throw exception;
 		}

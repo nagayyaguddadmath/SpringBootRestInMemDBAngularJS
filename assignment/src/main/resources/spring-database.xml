@@ -52,8 +52,7 @@
 	<bean id="user" class="com.uxpsystems.assignment.model.User" />
 
  	<bean id="userServiceDAOImpl" class="com.uxpsystems.assignment.service.UserServiceDAOImpl" />
-
-
+ 	
 <!--  	<bean id="UserController" class="com.uxpsystems.assignment.controller.UserController">
 		<property name="userServiceDAOImpl" ref="userServiceDAOImpl" />
 	</bean>
