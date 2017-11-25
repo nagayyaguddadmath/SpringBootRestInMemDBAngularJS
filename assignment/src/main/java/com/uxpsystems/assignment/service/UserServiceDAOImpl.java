@@ -21,7 +21,7 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 	@PersistenceContext
 	EntityManager em;
 
-	private static final String SELECTQUERYBYNAME = "SELECT U FROM User U WHERE U.username=:username AND U.status=:status";
+	public static final String SELECTQUERYBYNAME = "SELECT U FROM User U WHERE U.username=:username AND U.status=:status";
 	private static final String SELECTQUERYBYID = "SELECT U FROM User U WHERE U.userid=:userid AND U.status=:status";
 	private static final String SELECTALLQUERY = "SELECT U FROM User U WHERE U.status=:status";
 
@@ -111,6 +111,10 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 		} else {
 			throw new Exception("User Not found in the database");
 		}
+	}
+
+	public void setEm(EntityManager em) {
+		this.em = em;
 	}
 
 }

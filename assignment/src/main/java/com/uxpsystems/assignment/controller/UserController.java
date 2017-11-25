@@ -28,7 +28,7 @@ import com.uxpsystems.assignment.service.UserServiceDAO;
 @CrossOrigin
 @RestController
 @ComponentScan("com.uxpsystems.assignment")
-@ImportResource("classpath:spring-database.xml")
+@ImportResource("classpath:spring-context.xml")
 @EnableAutoConfiguration
 @EnableTransactionManagement
 public class UserController {

@@ -28,7 +28,7 @@ import io.restassured.specification.ResponseSpecification;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ComponentScan("com.uxpsystems.assignment")
 //@EnableAutoConfiguration
-@ContextConfiguration(locations={"classpath*:spring-database.xml"})
+@ContextConfiguration(locations={"classpath*:spring-context.xml"})
 public class UserControllerIntegrationTest {
 
 	private static final String ADMIN_USER_NAME = "admin";

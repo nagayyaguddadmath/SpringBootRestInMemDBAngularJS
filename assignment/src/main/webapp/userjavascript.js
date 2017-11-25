@@ -40,6 +40,7 @@ app.controller("UserController", function($scope, $http) {
 			_refreshuserData();
 			$scope.userForm.response = "User created successfully..";
 		}, function errorCallback(response) {
+			$scope.userForm.response = "ERROR: Unable to create user..";
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
 		});
@@ -71,6 +72,7 @@ app.controller("UserController", function($scope, $http) {
 			_refreshuserData();
 			$scope.userForm.response = "User updated successfully..";
 		}, function errorCallback(response) {
+			$scope.userForm.response = "ERROR: Unable to update user..";
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
 		});
@@ -97,6 +99,7 @@ app.controller("UserController", function($scope, $http) {
 			$scope.userForm = response.data;
 			$scope.userForm.response = "Found user..";
 		}, function errorCallback(response) {
+			$scope.userForm.response = "ERROR: Unable to find user..";
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
 		});
@@ -116,6 +119,7 @@ app.controller("UserController", function($scope, $http) {
 			$scope.users = response.data;
 			$scope.userForm.response = "Deleted User successfully..";
 		}, function errorCallback(response) {
+			$scope.userForm.response = "ERROR: Unable to delete user..";
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
 		});

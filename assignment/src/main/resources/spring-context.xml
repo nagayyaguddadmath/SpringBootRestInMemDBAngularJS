@@ -14,12 +14,6 @@
 	<jdbc:embedded-database id="dataSource" type="HSQL">
 	</jdbc:embedded-database>
 
-
-	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
-		destroy-method="close"> <property name="driverClassName" value="org.hsqldb.jdbc.JDBCDriver"/> 
-		<property name="url" value="jdbc:hsqldb:mem:myDb" /> <property name="username" 
-		value="admin" /> <property name="password" value="password" /> </bean> -->
-
 	<context:component-scan base-package="com.uxpsystems.assignment" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
@@ -33,8 +27,6 @@
 				<property name="database" value="HSQL" />
 			</bean>
 		</property>
-		<!-- <property name="persistenceUnitName" value="jpa.sample" /> This can 
-			be deleted. Nenad -->
 		<property name="packagesToScan" value="com.uxpsystems.assignment"></property>
 		<property name="jpaProperties">
 			<props>
@@ -56,20 +48,8 @@
 
 	<bean id="userServiceDAOImpl" class="com.uxpsystems.assignment.service.UserServiceDAOImpl" />
 
-	<!-- <bean id="UserController" class="com.uxpsystems.assignment.controller.UserController"> 
-		<property name="userServiceDAOImpl" ref="userServiceDAOImpl" /> </bean> -->
-	<!-- <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"> 
-		<property name="sessionFactory" ref="sessionFactory"></property> </bean> -->
-
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-
-	<!-- <tx:advice id="txAdvice" transaction-manager="transactionManager"> 
-		<tx:attributes> <tx:method name="get*" read-only="true" /> <tx:method name="find*" 
-		read-only="true" /> <tx:method name="*" /> </tx:attributes> </tx:advice> -->
-
-	<!-- <jdbc:embedded-database id="dataSource1" type="HSQL"> <jdbc:script 
-		location="classpath:db/sql/create-db.sql" /> </jdbc:embedded-database> -->
 
 </beans>
