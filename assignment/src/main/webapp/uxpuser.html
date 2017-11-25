@@ -6,7 +6,7 @@
 <title>Nagayya's User Management Application</title>
 
 <script src="angular.min.js"></script>
-<script src="userjavascript.js?ver111"></script>
+<script src="userjavascript.js"></script>
 
 
 <style>
@@ -120,12 +120,8 @@ td, th {
 						<button ng-click="deleteUser()" class="blue-button">Delete
 							User</button>
 
-						<div ng-switch on=userForm.response">
-							<p ng-switch-when="create">User created successfully..</p>
-							<p ng-switch-when="update">User updated successfully..</p>
-							<p ng-switch-when="found">Found user</p>
-							<p ng-switch-when="delete">Deleted User successfully..</p>
-						</div>
+						<textarea ng-model="userForm.response" rows="1" cols="30" disabled></textarea>
+						
 					</td>
 				</tr>
 			</table>

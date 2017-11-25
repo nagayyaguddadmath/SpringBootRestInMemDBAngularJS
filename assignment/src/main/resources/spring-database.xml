@@ -20,7 +20,7 @@
 		<property name="url" value="jdbc:hsqldb:mem:myDb" /> <property name="username" 
 		value="admin" /> <property name="password" value="password" /> </bean> -->
 
-<context:component-scan base-package="com.uxpsystems.assignment" />
+	<context:component-scan base-package="com.uxpsystems.assignment" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
@@ -38,25 +38,26 @@
 		<property name="packagesToScan" value="com.uxpsystems.assignment"></property>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.dialect">
-					org.hibernate.dialect.HSQLDialect
-				</prop>
-				<prop key="hibernate.max_fetch_depth">3</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
 				<prop key="hibernate.jdbc.fetch_size">50</prop>
 				<prop key="hibernate.jdbc.batch_size">10</prop>
 				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class">com.hazelcast.hibernate.HazelcastCacheRegionFactory</prop>
+				<prop key="hibernate.generate_statistics">false</prop>
+				<prop key="hibernate.cache.use_structured_entries">true</prop>
 			</props>
 		</property>
 	</bean>
 
 	<bean id="user" class="com.uxpsystems.assignment.model.User" />
 
- 	<bean id="userServiceDAOImpl" class="com.uxpsystems.assignment.service.UserServiceDAOImpl" />
- 	
-<!--  	<bean id="UserController" class="com.uxpsystems.assignment.controller.UserController">
-		<property name="userServiceDAOImpl" ref="userServiceDAOImpl" />
-	</bean>
- -->
+	<bean id="userServiceDAOImpl" class="com.uxpsystems.assignment.service.UserServiceDAOImpl" />
+
+	<!-- <bean id="UserController" class="com.uxpsystems.assignment.controller.UserController"> 
+		<property name="userServiceDAOImpl" ref="userServiceDAOImpl" /> </bean> -->
 	<!-- <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"> 
 		<property name="sessionFactory" ref="sessionFactory"></property> </bean> -->
 

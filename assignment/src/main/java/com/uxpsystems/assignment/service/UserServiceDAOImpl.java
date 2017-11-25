@@ -32,6 +32,9 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 		Query query = em.createQuery(SELECTQUERYBYNAME)
 				.setParameter("username", username)
 				.setParameter("status", UserStatus.Activated);
+		query.setHint("org.hibernate.cacheable", true);
+		query.setHint("org.hibernate.cacheMode", "NORMAL");
+
 		List<User> users = (List<User>)query.getResultList();
 		if (users == null || users.size() < 1) {
 			throw new Exception("User Not found in the database");
@@ -44,6 +47,9 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 	public List<User> getAllUsers() {
 		Query query = em.createQuery(SELECTALLQUERY)
 				.setParameter("status", UserStatus.Activated);
+		query.setHint("org.hibernate.cacheable", true);
+		query.setHint("org.hibernate.cacheMode", "NORMAL");
+
 		System.out.println("\n.......Found Users From The Database.......\n");
 		return (List<User>)query.getResultList();
 	}
@@ -94,6 +100,9 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 		Query query = em.createQuery(SELECTQUERYBYID)
 				.setParameter("userid", userid)
 				.setParameter("status", UserStatus.Activated);
+		query.setHint("org.hibernate.cacheable", true);
+		query.setHint("org.hibernate.cacheMode", "NORMAL");
+
 		@SuppressWarnings("unchecked")
 		List<User> users = query.getResultList();
 		if (users != null && users.size() == 1) {

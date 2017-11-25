@@ -1,5 +1,6 @@
 package com.uxpsystems.assignment.model;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "user_table")
+@Cacheable
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
@@ -27,6 +29,7 @@ public class User {
 	private String username;
 
 	@Column(name = "user_password")
+	@Convert(converter = PasswordEncoder.class)
 	@XmlAttribute
 	private String password;
 

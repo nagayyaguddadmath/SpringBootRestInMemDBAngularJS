@@ -38,7 +38,7 @@ app.controller("UserController", function($scope, $http) {
 			}
 		}).then(function successCallback(response) {
 			_refreshuserData();
-			$scope.userForm.response = "create";
+			$scope.userForm.response = "User created successfully..";
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
@@ -69,7 +69,7 @@ app.controller("UserController", function($scope, $http) {
 			}
 		}).then(function successCallback(response) {
 			_refreshuserData();
-			$scope.userForm.response = "update";
+			$scope.userForm.response = "User updated successfully..";
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
@@ -95,38 +95,13 @@ app.controller("UserController", function($scope, $http) {
 			}
 		}).then(function successCallback(response) {
 			$scope.userForm = response.data;
-			$scope.userForm.response = "found";
+			$scope.userForm.response = "Found user..";
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
 		});
 
 	};
-
-
-	$scope.sortByName = function() {
-		var method = "";
-		var url = "";
-
-		method = "GET";
-		url = 'http://localhost:8080/user';
-
-		$http({
-			method : method,
-			url : url,
-			data : angular.toJson($scope.userForm),
-			headers : {
-				'Content-Type' : 'application/json'
-			}
-		}).then(function successCallback(response) {
-			$scope.users = response.data;
-		}, function errorCallback(response) {
-			alert(JSON.stringify(response));
-			console.log(response.statusText);
-		});
-
-	};
-
 
 	$scope.deleteUser = function() {
 
@@ -139,24 +114,12 @@ app.controller("UserController", function($scope, $http) {
 			}
 		}).then(function successCallback(response) {
 			$scope.users = response.data;
-			$scope.userForm.response = "delete";
+			$scope.userForm.response = "Deleted User successfully..";
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
 		});
 	};
-
-	// In case of edit, populate form fields 
-	$scope.editUser = function(user) {
-
-		$scope.userForm.username = user.username;
-		$scope.userForm.password = user.password;
-		$scope.userForm.status = user.status;
-
-		alert("Please edit above and click on Update button. Please don't edit Name..");
-	};
-
-
 
 	function _refreshuserData() {
 		$http({
@@ -164,7 +127,6 @@ app.controller("UserController", function($scope, $http) {
 			url : 'http://localhost:8080/user?username=' + $scope.userForm.username
 		}).then(function successCallback(response) {
 			$scope.users = response.data;
-			$scope.userForm.response = "";
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response));
 			console.log(response.statusText);
