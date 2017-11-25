@@ -34,6 +34,7 @@ public class UserServiceDAOUnitTest {
 		userServiceDAOImpl.setEm(entityManager);
 
 		user = new User();
+		user.setUserid(1);
 		user.setUsername("username");
 		user.setPassword("password");
 		user.setStatus(UserStatus.Activated);
@@ -68,7 +69,7 @@ public class UserServiceDAOUnitTest {
 		String newusername = "usernameUPDATED";
 		user.setUsername(newusername);
 
-		Mockito.doReturn(true).when(entityManager).merge(user);
+		Mockito.doReturn(user).when(entityManager).merge(user);
 
 		User usersActual = userServiceDAOImpl.updateUser(user);
 		assertTrue("Should have return user", newusername.equals(usersActual.getUsername()));

@@ -91,9 +91,14 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 
 	@Override
 	public User updateUser(User user) throws Exception{
-		em.merge(user);
+		if (user.getUserid() == 0 ||  (user.getUsername() == null || user.getUsername().length() < 1)  ||
+				(user.getPassword() == null || user.getPassword().length() < 1)) {
+			throw new Exception("User not found hence cannot update");
+		}
+
+		User newUser = em.merge(user);
 		System.out.println("\n.......User Updated Successfully To The Database.......\n");
-		return user;
+		return newUser;
 	}
 
 	private User findUserById(int userid) throws Exception {
