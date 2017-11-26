@@ -15,23 +15,21 @@ app.controller("UserController", function($scope, $http) {
 			result : ""
 	};
 
+	var basrurl = '/user';
+
 	$scope.checkAll = function () {
 	};
 
 //	_refreshuserData();
 
-
-
 	$scope.createUser = function() {
 		var method = "";
-		var url = "";
 		method = "POST";
-		url = 'http://localhost:8080/user';
 		$scope.userForm.status = "Activated";
 
 		$http({
 			method : method,
-			url : url,
+			url : basrurl,
 			data : angular.toJson($scope.userForm),
 			headers : {
 				'Content-Type' : 'application/json'
@@ -56,14 +54,12 @@ app.controller("UserController", function($scope, $http) {
 
 	$scope.updateUser = function() {
 		var method = "";
-		var url = "";
 
 		method = "PUT";
-		url = 'http://localhost:8080/user';
 
 		$http({
 			method : method,
-			url : url,
+			url : basrurl,
 			data : angular.toJson($scope.userForm),
 			headers : {
 				'Content-Type' : 'application/json'
@@ -82,15 +78,14 @@ app.controller("UserController", function($scope, $http) {
 
 	$scope.findUser = function() {
 		var method = "";
-		var url = "";
 
 		method = "GET";
 
-		url = 'http://localhost:8080/user?username=' + $scope.userForm.username;
+		findurl = basrurl + '?username=' + $scope.userForm.username;
 
 		$http({
 			method : method,
-			url : url,
+			url : findurl,
 			data : angular.toJson($scope.userForm),
 			headers : {
 				'Content-Type' : 'application/json'
@@ -110,7 +105,7 @@ app.controller("UserController", function($scope, $http) {
 
 		$http({
 			method : 'DELETE',
-			url : 'http://localhost:8080/user?userid=' + $scope.userForm.userid,
+			url : basrurl + '?userid=' + $scope.userForm.userid,
 			data : angular.toJson($scope.userForm),
 			headers : {
 				'Content-Type' : 'application/json'
@@ -128,7 +123,7 @@ app.controller("UserController", function($scope, $http) {
 	function _refreshuserData() {
 		$http({
 			method : 'GET',
-			url : 'http://localhost:8080/user?username=' + $scope.userForm.username
+			url : basrurl + '?username=' + $scope.userForm.username
 		}).then(function successCallback(response) {
 			$scope.users = response.data;
 		}, function errorCallback(response) {

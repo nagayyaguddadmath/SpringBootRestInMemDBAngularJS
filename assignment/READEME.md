@@ -28,3 +28,9 @@ User credentials have been configured in java class SecurityConfiguration
 TO Run all Test case and create war file, please run the below command
 mvn clean install
 
+
+Note: Please note that, you can add multiple users with same name using createUser Rest API (as we use userId as primary Key for USer). But find user will return the first user with given name.
+This can be enhanced further at client side (by displaying all users created)
+
+REST API can be accessed directly by below URL:
+http://localhost:8080/user
