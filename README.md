@@ -1,4 +1,4 @@
-This is assignment given By UXP System to Nagayya Guddadamth
+This is assignment completed by Nagayya Guddadamth
 
 This application will be used for user management:
 1) User REST services has been exposed with basic authontication (Services use spring Rest controller with JSON)
