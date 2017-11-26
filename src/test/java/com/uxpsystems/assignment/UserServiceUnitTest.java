@@ -27,7 +27,6 @@ public class UserServiceUnitTest {
 	private static Query query;
 	private static UserServiceImpl userServiceImpl = new UserServiceImpl();
 	private static User user;
-	private static int userid = 1;
 
 
 	@BeforeClass

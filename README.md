@@ -8,8 +8,8 @@ This application will be used for user management:
 5) Application has been developed using Spring Boot
 6) Hibernate second level cache has been done using hazelcast cache
 7) Password in database has been encoded using BASE64 encoding
-8) Integration tests have been written using REST-ASSURED API's
-9) Unit testing has been done using Mockito
+8) Integration tests have been written using REST-ASSURED API's (class name: UserControllerIntegrationTest)
+9) Unit testing has been done using Mockito (class name: UserServiceUnitTest)
 
 
 To Run and Deploy locally using spring boot:
@@ -32,5 +32,5 @@ mvn clean install
 Note: Please note that, you can add multiple users with same name using createUser Rest API (as we use userId as primary Key for USer). But find user will return the first user with given name.
 This can be enhanced further at client side (by displaying all users created)
 
-REST API can be accessed directly by below URL:
+After deployment, REST API can be accessed directly by below URL:
 http://localhost:8080/user
